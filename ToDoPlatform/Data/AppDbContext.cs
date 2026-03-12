@@ -29,5 +29,4 @@ public class AppDbContext : IdentityDbContext<AppUser>
         builder.Entity<IdentityUserLogin<string>>().ToTable("user_logins");
         builder.Entity<IdentityRoleClaim<string>>().ToTable("role_claims");
     }
-
 }
