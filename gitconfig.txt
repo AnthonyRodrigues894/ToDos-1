@@ -1,12 +1,19 @@
-git config --global user.name GalloJunior
-git config --global user.email gallojunior@gmail.com
-
+----------------------------------------------------------
+                     CONFIGURANDO O GITHUB
+git config --global user.name AnthonyRodrigues894
+git config --global user.email anthonyserrano894@gmail.com
+-----------------------------------------------------------
+                     CRIANDO O PROJETO
 dotnet new mvc -o ToDoPlatform
+-----------------------------------------------------------
+                     ABRINDO O PROJETO
 cd ToDoPlatform
 
+dotnet watch run
+-----------------------------------------------------------
+                     INSTALAR AS EXTENSÕES
 dotnet add package Microsoft.EntityFrameworkCore --version 10.0.3
 dotnet add package Microsoft.EntityFrameworkCore.Design --version 10.0.3
 dotnet add package Microsoft.EntityFrameworkCore.Tools --version 10.0.3
 dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 10.0.3
 dotnet add package MySql.EntityFrameworkCore --version 10.0.1
-
