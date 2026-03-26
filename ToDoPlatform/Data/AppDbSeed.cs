@@ -32,26 +32,26 @@ public class AppDbSeed
         {
             new AppUser()
             {
-                Id = "07c08a8c-48a4-4cde-b17f-7fedf5a95c79",
-                Email = "gallojunior@gmail.com",
-                NormalizedEmail = "GALLOJUNIOR@GMAIL.COM",
-                UserName = "gallojunior@gmail.com",
-                NormalizedUserName = "GALLOJUNIOR@GMAIL.COM",
+                Id = "1b3a49bf-fe11-40f6-b8c0-af72ae166492",
+                Email = "viniciusgodoy.martins@gmail.com",
+                NormalizedEmail = "VINICIUSGODOY.MARTINS@GMAIL.COM",
+                UserName = "viniciusgodoy.martins@gmail.com",
+                NormalizedUserName = "VINICIUSGODOY.MARTINS@GMAIL.COM",
                 LockoutEnabled = false,
                 EmailConfirmed = true,
-                Name = "José Antonio Gallo Junior",
+                Name = "Vinicius Godoy Martins",
                 ProfilePicture = "/img/users/07c08a8c-48a4-4cde-b17f-7fedf5a95c79.png"
             },
             new AppUser()
             {
-                Id = "41e8ef46-4c13-43cb-9b7e-7222642df441",
-                Email = "galloranger@gmail.com",
-                NormalizedEmail = "GALLORANGER@GMAIL.COM",
-                UserName = "galloranger@gmail.com",
-                NormalizedUserName = "GALLORANGER@GMAIL.COM",
+                Id = "70e7ccf8-33c0-4f79-9022-d64f56187821",
+                Email = "anthonyserrano894@gmail.com",
+                NormalizedEmail = "ANTHONYSERRANO894@GMAIL.COM",
+                UserName = "anthonyserrano894@gmail.com",
+                NormalizedUserName = "ANTHONYSERRANO894@GMAIL.COM",
                 LockoutEnabled = true,
                 EmailConfirmed = true,
-                Name = "José Antonio Gallo Junior",
+                Name = "Anthony Rodrigues da Silva",
                 ProfilePicture = "/img/users/41e8ef46-4c13-43cb-9b7e-7222642df441.png"
             }
         };

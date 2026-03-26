@@ -1,0 +1,32 @@
+<!-- Views/Shared/_Notification.cshtml -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    async function showMessage(type, text, time, url) {
+        let timerCompleted = false;
+
+        await Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: type || "success",
+            title: text,
+            showConfirmButton: false,
+            timer: time || 3000,
+            timerProgressBar: true,
+
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            },
+
+            willClose: () => {
+                timerCompleted = true;
+            }
+        });
+
+        // 🔁 Redireciona somente se o timer terminou naturalmente
+        if (timerCompleted && url) {
+            window.location.href = url;
+        }
+    }
+</script>
