@@ -13,20 +13,20 @@ public class AppDbSeed
         {
             new()
             {
-               Id = "65b7ff98-b501-47f1-a5b9-f33e0af5b016",
-               Name = "Administrador",
-               NormalizedName = "ADMINISTRADOR"
+                Id = "45a2cb91-04c5-4160-8447-7a47f7534c0a",
+                Name = "Administrador",
+                NormalizedName = "ADMINISTRADOR"
             },
             new()
             {
-               Id = "40446663-5c11-4fa6-a96a-33095f5558b0",
-               Name = "Usuário",
-               NormalizedName = "USUÁRIO"
+                Id = "eb15bf5d-57f9-4bd1-b74f-4f5ef63555b6",
+                Name = "Usuário",
+                NormalizedName = "USUÁRIO"
             },
         };
         builder.Entity<IdentityRole>().HasData(roles);
         #endregion
-    
+
         #region Popular dados de Usuário
         List<AppUser> users = new()
         {
@@ -86,24 +86,27 @@ public class AppDbSeed
             new ToDo()
             {
                 Id = 1,
-                Title = "Terminar os PTDs",
-                Description = "Finalizar até 11/03",
+                Title = "Fazer redação da Meire",
+                Description = "Produzir uma redação modelo ENEM.",
                 UserId = users[0].Id
             },
+
             new ToDo()
             {
                 Id = 2,
-                Title = "Preparar material de revisão de MVC",
-                Description = "Preparar apostila para alunos de MVC",
-                UserId = users[0].Id
+                Title = "Ligar na barbearia",
+                Description = "Agendar corte de cabelo.",
+                UserId = users[1].Id
             },
+
             new ToDo()
             {
                 Id = 3,
-                Title = "Ligar no SAAE",
-                Description = "Solicitar conserto do hidrometro",
+                Title = "Estudar prova",
+                Description = "Estudar para prova de Matemática.",
                 UserId = users[1].Id
             },
+
         };
         builder.Entity<ToDo>().HasData(toDos);
         #endregion

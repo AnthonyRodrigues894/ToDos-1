@@ -109,12 +109,7 @@ body {
 }
 
 .error-message {
-    background: #ffebee;
     color: #c62828;
-    padding: 0.8rem;
-    border-radius: 12px;
-    margin-bottom: 1rem;
-    display: none;
 }
 
 .remember-forgot {

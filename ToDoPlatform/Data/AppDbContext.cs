@@ -4,11 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using ToDoPlatform.Models;
 
 namespace ToDoPlatform.Data;
-
 public class AppDbContext : IdentityDbContext<AppUser>
+
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) 
-        : base(options)
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
 
@@ -29,4 +28,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
         builder.Entity<IdentityUserLogin<string>>().ToTable("user_logins");
         builder.Entity<IdentityRoleClaim<string>>().ToTable("role_claims");
     }
+
 }

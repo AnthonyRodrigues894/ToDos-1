@@ -5,19 +5,19 @@ namespace ToDoPlatform.ViewModels;
 
 public class LoginVM
 {
-    [Display(Name = "E-mail", Prompt = "seu@email.com")]
+    [Display(Name = "E-mail", Prompt = "seu@gmail.com")]
     [Required(ErrorMessage = "O e-mail de acesso é obrigatório!")]
-    [EmailAddress(ErrorMessage = "Informe um e-mail válido!")]
+    [EmailAddress(ErrorMessage = "Informe um e-mail válido")]
     public string Email { get; set; }
-    
+
     [DataType(DataType.Password)]
-    [Display(Name = "Senha", Prompt = "*******")]
-    [Required(ErrorMessage = "A senha de acesso é obrigatória!")]
+    [Display(Name = "Senha", Prompt = "********")]
+    [Required(ErrorMessage = "A senha de acesso é obrigatória")]
     public string Password { get; set; }
     
     [Display(Name = "Manter Conectado?")]
     public bool RememberMe { get; set; }
-    
+
     [HiddenInput]
     public string ReturnUrl { get; set; }
 }

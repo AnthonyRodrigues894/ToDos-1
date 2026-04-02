@@ -1,11 +1,10 @@
-using System.Linq.Expressions;
 using System.Net.Mail;
 
 namespace ToDoPlatform.Helpers;
 
-public static class Helper
+public class Helper
 {
-    public static bool IsValidEmail(string email)
+     public static bool IsValidEmail(string email)
     {
         try
         {
@@ -14,7 +13,7 @@ public static class Helper
         }
         catch (FormatException)
         {
-            return false;
+            return false;;
         }
-    }
+    }   
 }

@@ -6,60 +6,56 @@ using ToDoPlatform.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔌 Conexão com banco
-var conexao = builder.Configuration.GetConnectionString("Conexao");
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySQL(conexao)
+// Add services to the container.
+// Serviço de Conexão com o banco de dados.
+string conexao = builder.Configuration.GetConnectionString("Conexao");
+builder.Services.AddDbContext<AppDbContext>(
+    options => options.UseMySQL(conexao)
 );
 
-// 🔐 Identity
-builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
-{
-    opt.SignIn.RequireConfirmedAccount = false;
-    opt.User.RequireUniqueEmail = true;
-    opt.Lockout.MaxFailedAccessAttempts = 5;
-    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-})
+// Serviço de Configuração de Gestão de Usuários.
+builder.Services.AddIdentity<AppUser, IdentityRole>(
+    opt =>
+    {
+        opt.SignIn.RequireConfirmedAccount = false;
+        opt.User.RequireUniqueEmail = true;
+    }
+)
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
-// ⚠️ Necessário para IHttpContextAccessor (usado no UserService)
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<IUserService, UserService>();
 
-// 👤 Registro do serviço
-builder.Services.AddScoped<IUserService, UserService>();
-
-// MVC
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// 🗄️ Criação do banco (dev only recomendado)
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await db.Database.EnsureCreatedAsync();
 }
 
-// 🚦 Pipeline
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(); // ⚠️ necessário
-
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Rotas
+app.MapStaticAssets();
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
+
 
 app.Run();

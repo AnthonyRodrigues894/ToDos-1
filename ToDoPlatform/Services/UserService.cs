@@ -21,41 +21,30 @@ public class UserService : IUserService
         SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
         ILogger<UserService> logger)
-    {
+ {
         _dbContext = dbContext;
         _httpContextAccessor = httpContextAccessor;
         _signInManager = signInManager;
         _userManager = userManager;
         _logger = logger;
-    }
+ }
 
-    public async Task<UserVM> GetLoggedUser()
-    {
-        var httpContext = _httpContextAccessor.HttpContext;
+ public async Task<UserVM> GetLoggedUser()
+ {
+        var userId = _httpContextAccessor.HttpContext.User
+                    .FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null) return null;
 
-        if (httpContext == null || httpContext.User == null)
-            return null;
+        var user = await _dbContext.AppUsers.SingleOrDefaultAsync(u =>
+u.Id == userId);
+        var roles = string.Join(", ", await
+_userManager.GetRolesAsync(user));
+        var isAdmin = await _userManager.IsInRoleAsync(user,
+"Administrador");
 
-        var userId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        if (string.IsNullOrEmpty(userId))
-            return null;
-
-        var user = await _dbContext.AppUsers
-            .AsNoTracking()
-            .SingleOrDefaultAsync(u => u.Id == userId);
-
-        if (user == null)
-            return null;
-
-        var rolesList = await _userManager.GetRolesAsync(user);
-        var roles = string.Join(", ", rolesList);
-
-        var isAdmin = await _userManager.IsInRoleAsync(user, "Administrador");
-
-        return new UserVM
+        return new UserVM()
         {
-            Id = user.Id,
+            Id = userId,
             Name = user.Name,
             ProfilePicture = user.ProfilePicture,
             Email = user.Email,
@@ -63,38 +52,28 @@ public class UserService : IUserService
             Roles = roles,
             IsAdmin = isAdmin
         };
-    }
+ }
 
-    public async Task<SignInResult> Login(LoginVM login)
-    {
-        if (login == null)
-            throw new ArgumentNullException(nameof(login));
+ public async Task<SignInResult> Login(LoginVM login)
+ {
+    string userName = login.Email;
+    var user = await _userManager.FindByEmailAsync(login.Email);
+    if (user != null) userName = user.UserName;
 
-        string userName = login.Email;
+    var result = await _signInManager.PasswordSignInAsync(
+        userName, login.Password, login.RememberMe,
+lockoutOnFailure: true);
 
-        var user = await _userManager.FindByEmailAsync(login.Email);
+    if (result.Succeeded)
+        _logger.LogInformation($"Usuário '{userName}' acessou o sistema");
+     if (result.IsLockedOut)
+        _logger.LogWarning($"Usuário '{userName}' está bloqueado");
 
-        if (user != null)
-            userName = user.UserName;
-
-        var result = await _signInManager.PasswordSignInAsync(
-            userName,
-            login.Password,
-            login.RememberMe,
-            lockoutOnFailure: true);
-
-        if (result.Succeeded)
-            _logger.LogInformation($"Usuário '{userName}' acessou o sistema");
-
-        if (result.IsLockedOut)
-            _logger.LogWarning($"Usuário '{userName}' está bloqueado");
-
-        return result;
-    }
-
-    public async Task Logout()
-    {
-        _logger.LogInformation("Usuário saiu do sistema");
-        await _signInManager.SignOutAsync();
-    }
+    return result;
+ }
+ public async Task Logout()
+ {
+    _logger.LogInformation($"Usuário saiu do sistema");
+    await _signInManager.SignOutAsync();
+}
 }
