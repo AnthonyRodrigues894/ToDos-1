@@ -32,7 +32,7 @@ public class AppDbSeed
         {
             new AppUser()
             {
-                Id = "1b3a49bf-fe11-40f6-b8c0-af72ae166492",
+                 Id = "1b3a49bf-fe11-40f6-b8c0-af72ae166492",
                 Email = "viniciusgodoy.martins@gmail.com",
                 NormalizedEmail = "VINICIUSGODOY.MARTINS@GMAIL.COM",
                 UserName = "viniciusgodoy.martins@gmail.com",
@@ -58,7 +58,7 @@ public class AppDbSeed
         foreach (var user in users)
         {
             PasswordHasher<IdentityUser> pass = new();
-            user.PasswordHash = pass.HashPassword(user, "123456");
+            user.PasswordHash = pass.HashPassword(user, "654321");
         }
         builder.Entity<AppUser>().HasData(users);
         #endregion

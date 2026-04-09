@@ -4,10 +4,11 @@ using ToDoPlatform.ViewModels;
 using System.Security.Claims;
 using ToDoPlatform.Data;
 using Microsoft.EntityFrameworkCore;
+using ToDoPlatform.Helpers;
 
 namespace ToDoPlatform.Services;
 
-public class UserService : IUserService 
+public class UserService : IUserService
 {
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
@@ -59,7 +60,7 @@ public class UserService : IUserService
 
         var result = await _signInManager.PasswordSignInAsync(
             userName, login.Password, login.RememberMe,
-            lockoutOnFailure: true);
+    lockoutOnFailure: true);
 
         if (result.Succeeded)
             _logger.LogInformation($"Usuário '{userName}' acessou o sistema");
@@ -68,42 +69,38 @@ public class UserService : IUserService
 
         return result;
     }
-
     public async Task Logout()
     {
         _logger.LogInformation($"Usuário saiu do sistema");
         await _signInManager.SignOutAsync();
     }
 
-    // ✅ Método adicionado
     public async Task<List<string>> Register(RegisterVM register)
     {
         var user = new AppUser()
         {
             Name = register.Name,
             UserName = register.Email,
-            NormalizedUserName = register.Email.ToUpper(), // corrigido
+            NormalizedUserName = register.Email.Normalize(),
             Email = register.Email,
-            NormalizedEmail = register.Email.ToUpper(), // corrigido
+            NormalizedEmail = register.Email.Normalize(),
             EmailConfirmed = true,
             LockoutEnabled = true,
-        };
-
-        var addUser = await _userManager.CreateAsync(user, register.Password);
-
-        List<string> result = new List<string>(); // corrigido
-
-        if (addUser.Succeeded)
-        {
-            _logger.LogInformation($"Novo usuário registrado: {register.Email}");
+            };
+            var addUser = await _userManager.CreateAsync(user,
+            register.Password);
+            List<string> result = [];
+            if (addUser.Succeeded)
+            {
+            _logger.LogInformation($"Novo usuário registrado:{register.Email}");
             await _userManager.AddToRoleAsync(user, "Usuário");
-        }
-        else
-        {
+            }
+            else
+            {
             foreach (var error in addUser.Errors)
-                result.Add(TranslateIdentityErrors.TranslateErrorMessage(error.Code)); // TranslateIdentityErrors
-        }
 
-        return result;
-    }
-}
+            result.Add(TranslateIdentityErrors.TranslateErrorMessage(error.Code));
+            }
+            return result;
+            }
+        }
