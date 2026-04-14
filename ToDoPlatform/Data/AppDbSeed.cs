@@ -11,7 +11,7 @@ public class AppDbSeed
         #region Popular Perfis de usuários
         List<IdentityRole> roles = new()
         {
-            new()
+             new()
             {
                 Id = "45a2cb91-04c5-4160-8447-7a47f7534c0a",
                 Name = "Administrador",
@@ -55,10 +55,11 @@ public class AppDbSeed
                 ProfilePicture = "/img/users/41e8ef46-4c13-43cb-9b7e-7222642df441.png"
             }
         };
+
         foreach (var user in users)
         {
             PasswordHasher<IdentityUser> pass = new();
-            user.PasswordHash = pass.HashPassword(user, "654321");
+            user.PasswordHash = pass.HashPassword(user, "123456");
         }
         builder.Entity<AppUser>().HasData(users);
         #endregion
